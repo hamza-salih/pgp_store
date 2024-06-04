@@ -7,7 +7,7 @@ require('dotenv').config();
 const fetchPublicKeyRouter = require('./routes/fetch_public_key');
 const actionRoutes = require('./routes/actionRoutes');
 const ihmRoutes = require('./routes/ihmRoutes');
-const userRoutes = require('./routes/userRoutes');
+// const userRoutes = require('./routes/userRoutes');
 const logout = require('./routes/auth/logout');
 const register = require('./routes/auth/register');
 
