@@ -42,7 +42,7 @@ app.get('/auth/login', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ihm', 'login.html'));
+    res.sendFile(path.join(__dirname, 'ihm', 'auth', 'login.html'));
 });
 app.get('/decrypt', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'encrypt.html'));
