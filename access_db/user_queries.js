@@ -15,7 +15,8 @@ const User = sequelize.define('User', {
   Email: { type: DataTypes.STRING, allowNull: false },
   Address: { type: DataTypes.TEXT, allowNull: true },
   PGPKey: { type: DataTypes.TEXT, allowNull: false },
-  pin: { type: DataTypes.INTEGER, allowNull: false }
+  pin: { type: DataTypes.INTEGER, allowNull: false },
+  utype: { type: DataTypes.CHAR, allowNull: false }
 }, {
   timestamps: false,
   tableName: 'Users'
@@ -26,7 +27,7 @@ async function getUserByUsername(username) {
   return await User.findOne({ where: { Username: username } });
 }
 
-async function registerUser(	displayName, username, password, email, address, pgp_key, pin) {
+async function registerUser(	displayName, username, password, email, address, pgp_key, pin, utype) {
   try {
     const hashed_password = await bcrypt.hash(password, 10);
     const pinString = String(pin);
@@ -39,7 +40,8 @@ async function registerUser(	displayName, username, password, email, address, pg
       Email: email,
       Address: address,
       PGPKey: pgp_key,
-      pin: pin_Hashed
+      pin: pin_Hashed,
+      utype: utype
     });
     return newUser;
   } catch (error) {
