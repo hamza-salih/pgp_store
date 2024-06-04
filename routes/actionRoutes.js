@@ -57,11 +57,7 @@ router.post("/login", async (req, res) => {
       req.session.correctUser = true;
       res.redirect("../home");
     } else {
-      res
-        .status(400)
-        .send(
-          `Decrypted message: ${decrypted_message} & Original message: ${original_message}`
-        );
+      return res.redirect('/decrypt');
     }
   } else {
     res.status(400).send("Invalid request.");
