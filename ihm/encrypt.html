@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt Message</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .encrypt-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .encrypt-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <!-- OpenPGP.js -->
+    <script src="https://unpkg.com/openpgp@5.0.0/dist/openpgp.min.js"></script>
+    <script>
+        async function encrypted() {
+            try {
+                const response = await fetch('/routes/fetch_public_key');
+                const data = await response.json();
+                if (data.error) {
+                    alert(data.error);
+                    console.log('Error fetching public key:', data.error);
+                    return null;
+                }
+                return data.encryptedRandomMessage;
+            } catch (error) {
+                console.error('Error during fetchPublicKey:', error);
+                return null;
+            }
+        }
+
+        async function encryptMessage() {
+            const crypted = await encrypted();
+            console.log('Encrypted message:', crypted);
+            document.getElementById('encryptedMessage').value = crypted;
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login';
+        }
+
+        window.onload = encryptMessage;
+    </script>
+</head>
+
+<body>
+    <div class="container encrypt-container">
+        <h2>The Encrypted Message</h2>
+        <form>
+            <div class="form-group">
+                <label for="encryptedMessage">Encrypted Message:</label>
+                <textarea class="form-control" id="encryptedMessage" name="encryptedMessage" rows="5" readonly></textarea>
+            </div>
+        </form>
+        <button type="button" class="btn btn-custom btn-block" onclick="redirectToLogin()">Decrypt</button>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

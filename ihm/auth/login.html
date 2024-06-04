@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container login-container">
+        <h2>Login</h2>
+        <div id="loginForm"></div>
+        <div class="register-link">
+            <p>Don't have an account? <a href="/auth/register">Register</a></p>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function () {
+            fetch('/routes/fetch_public_key')
+                .then(response => response.json())
+                .then(data => {
+                    const loginForm = document.getElementById('loginForm');
+                    if (data.error) {
+                        loginForm.innerHTML = `
+                        <form action="/Action_Management/login" method="POST" id="loginForm" class="form-group">
+                           <div class="form-group">
+                               <label for="username">Username:</label>
+                               <input type="text" class="form-control" id="username" name="username" required>
+                           </div>
+                           <button type="submit" class="btn btn-custom btn-block">Request Decryption</button>
+                        </form>
+                        `;
+                    } else {
+                        loginForm.innerHTML = `
+                            <form action="/Action_Management/login" method="POST" id="loginForm" class="form-group">
+                                <div class="form-group">
+                                    <label for="decrypted_message">Decrypted Message:</label>
+                                    <textarea class="form-control" id="decrypted_message" name="decrypted_message" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-custom btn-block">Submit</button>
+                            </form>
+                        `;
+                    }
+                });
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

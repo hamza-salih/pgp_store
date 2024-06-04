@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Hi <span id="username"></span></h1>
+
+    <script>
+        window.onload = function() {
+            fetch('/routes/fetch_public_key')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        window.location.href = '/logout';
+                    } else {
+                        document.getElementById('username').innerText = data.displayName;
+                    }
+                });
+        };
+        
+        function logout() {
+            window.location.href = '/logout';    
+        }
+    </script>
+    
+    <button type="button" onclick="logout()">Logout</button>
+
+</body>
+</html>
