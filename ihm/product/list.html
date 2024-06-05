@@ -7,7 +7,13 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
+    <style>
+        body{
+            background-color: #0d1117;
+        }
+    </style>
     <script>
         async function list() {
             try {
@@ -54,9 +60,19 @@
                 productListContainer.innerHTML += productCard;
             });
         }
+
+        fetch('header')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('header').innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error loading header:', error);
+        });
     </script>
 </head>
 <body>
+    <div id="header"></div>
     <div class="container mt-5">
         <div class="row" id="product-list">
             <!-- Product cards will be dynamically inserted here -->
