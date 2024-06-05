@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { create_product } = require('../../access_db/user_queries');
+const { create_product } = require('../../access_db/product_queries');
 
 router.post('/', async (req, res) => {
     const { UserID } = req.session;

@@ -36,7 +36,7 @@
 
 const express = require("express");
 const router = express.Router();
-const { Product } = require("../access_db/user_queries"); // Import the Product model and relevant functions
+const { Product } = require("../access_db/product_queries");
 
 router.get("/", async (req, res) => {
     if (!req.session.username) {
