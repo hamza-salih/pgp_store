@@ -6,6 +6,10 @@ router.post('/', async (req, res) => {
     const { UserID } = req.session;
     const UserID_FK = UserID;
 
+    if (!req.session.username) {
+        return res.json({ error: "User not logged in." });
+      }
+    
     const currentDate = new Date();
     const Timestamp = currentDate;
 

@@ -5,6 +5,8 @@ const path = require('path');
 require('dotenv').config();
 
 const fetchPublicKeyRouter = require('./routes/fetch_public_key');
+const fetchProductRouter= require('./routes/fetch_product');
+
 const actionRoutes = require('./routes/actionRoutes');
 const ihmRoutes = require('./routes/ihmRoutes');
 // const userRoutes = require('./routes/userRoutes');
@@ -31,8 +33,11 @@ app.use('/IHM', express.static(path.join(__dirname, 'IHM')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/routes/fetch_public_key', fetchPublicKeyRouter);
-app.use('/logout', logout);
+app.use('/routes/fetch_product', fetchProductRouter);
 
+
+
+app.use('/logout', logout);
 app.use('/register', register);
 
 app.use('/InsertProd', InsertProd);
@@ -52,6 +57,12 @@ app.get('/login', (req, res) => {
 app.get('/decrypt', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'encrypt.html'));
 });
+
+app.get('/listProd', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'product', 'list.html'));
+});
+
+
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'index.html'));
 });
@@ -59,7 +70,6 @@ app.get('/home', (req, res) => {
 app.get('/CreateProduct', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'vendor', 'add_Product.html'));
 });
-
 
 
 

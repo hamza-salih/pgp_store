@@ -88,4 +88,6 @@ async function create_product(Name, Description, Price, Quantity, Timestamp, Use
       throw error;
     }
 }
-module.exports = { getUserByUsername, registerUser, create_product };
+
+
+module.exports = { getUserByUsername, registerUser, create_product, Product };

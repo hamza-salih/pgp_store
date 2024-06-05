@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <script>
+        async function list() {
+            try {
+                const response = await fetch('/routes/fetch_product');
+                const data = await response.json();
+                if (data.error) {
+                    alert(data.error);
+                    console.log('Error fetching the products:', data.error);
+                    return null;
+                }
+                return data;
+            } catch (error) {
+                console.error('Error during fetchPublicKey:', error);
+                return null;
+            }
+        }
+
+        window.onload = async function() {
+            const products = await list();
+            if (products) {
+                displayProducts(products);
+            }
+        };
+
+        function displayProducts(products) {
+            const productListContainer = document.getElementById('product-list');
+            productListContainer.innerHTML = ''; // Clear previous content
+
+            products.forEach(product => {
+                const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.Name}</h5>
+                                <p class="card-text">${product.Description}</p>
+                                <p class="card-text">Price: $${product.Price}</p>
+                                <p class="card-text">Quantity: ${product.Quantity}</p>
+                                <p class="card-text">Location From: ${product.location_from}</p>
+                                <p class="card-text">Location To: ${product.location_to}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productListContainer.innerHTML += productCard;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row" id="product-list">
+            <!-- Product cards will be dynamically inserted here -->
+        </div>
+    </div>
+</body>
+</html>
