@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 require('dotenv').config();
 
+
 const fetchPublicKeyRouter = require('./routes/fetch_public_key');
 const fetchProductRouter= require('./routes/fetch_product');
 
@@ -13,6 +14,8 @@ const ihmRoutes = require('./routes/ihmRoutes');
 const logout = require('./routes/auth/logout');
 const register = require('./routes/auth/register');
 const InsertProd = require('./routes/product/create');
+
+
 
 
 
@@ -36,11 +39,17 @@ app.use('/routes/fetch_public_key', fetchPublicKeyRouter);
 app.use('/routes/fetch_product', fetchProductRouter);
 
 
-
 app.use('/logout', logout);
 app.use('/register', register);
 
 app.use('/InsertProd', InsertProd);
+
+
+
+ // -------------------------------------------------------------------------------------
+app.get('/header', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'public', 'partials', 'header.html'));
+});
 
 
 app.get('/auth/register', (req, res) => {
@@ -70,6 +79,7 @@ app.get('/home', (req, res) => {
 app.get('/CreateProduct', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'vendor', 'add_Product.html'));
 });
+ // -------------------------------------------------------------------------------------
 
 
 

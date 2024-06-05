@@ -44,15 +44,12 @@ router.get("/", async (req, res) => {
         
       }
   try {
-    // Fetch all products from the database
     const products = await Product.findAll();
 
-    // Check if any products were found
     if (products.length === 0) {
       return res.json({ error: "No products found." });
     }
 
-    // Return the list of products
     return res.json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
