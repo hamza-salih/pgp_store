@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
         body {
             background-color: #f8f9fa;
         }
+
         .register-container {
             max-width: 500px;
             margin: 50px auto;
@@ -20,71 +22,90 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .register-container h2 {
             text-align: center;
             margin-bottom: 20px;
             color: #007bff;
         }
+
         .form-group label {
             font-weight: bold;
         }
+
         .btn-custom {
             background-color: #007bff;
             color: #fff;
             border: none;
         }
+
         .btn-custom:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
     <div class="container register-container">
         <h2>Add Product</h2>
-        <form action="/add_product" method="POST">
+        <form action="/InsertProd" method="POST">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="Name" name="Name" required>
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea class="form-control" id="description" name="description" required></textarea>
+                <textarea class="form-control" id="Description" name="Description" required></textarea>
             </div>
             <div class="form-group">
                 <label for="price">Price:</label>
-                <input type="number" class="form-control" id="price" name="price" required>
+                <input type="number" class="form-control" id="Price" name="Price" required>
             </div>
             <div class="form-group">
                 <label for="quantity">Quantity:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" required>
-            </div>
-            <div class="form-group">
-                <label for="timestamp">Timestamp:</label>
-                <input type="datetime-local" class="form-control" id="timestamp" name="timestamp" required>
-            </div>
-            <div class="form-group">
-                <label for="userID_FK">User ID:</label>
-                <input type="text" class="form-control" id="userID_FK" name="userID_FK" required>
+                <input type="number" class="form-control" id="Quantity" name="Quantity" required>
             </div>
             <div class="form-group">
                 <label for="location_from">Location From:</label>
-                <input type="text" class="form-control" id="location_from" name="location_from" required>
+                <select class="form-control" id="location_from" name="location_from" required>
+                    <option value="">Select a country</option>
+                    <option value="Worldwide">Worldwide</option>
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Andorra">Andorra</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Armenia">Armenia</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Azerbaijan">Azerbaijan</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="location_to">Location To:</label>
-                <input type="text" class="form-control" id="location_to" name="location_to" required>
+                <select class="form-control" id="location_to" name="location_to" required>
+                    <option value="">Select a country</option>
+                    <option value="Worldwide">Worldwide</option>
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Andorra">Andorra</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Armenia">Armenia</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Azerbaijan">Azerbaijan</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-custom btn-block">Add Product</button>
         </form>
-            <div class="register-link">
-                <p>Already have an account? <a href="/auth/login">Login</a></p>
-            </div>
-        </div>
-        
     </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

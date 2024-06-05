@@ -66,7 +66,7 @@ const Product = sequelize.define('Product', {
   location_from	: { type: DataTypes.STRING, allowNull: false },
   location_to	: { type: DataTypes.STRING, allowNull: false },
 }, {
-  timestamps: true,
+  timestamps: false,
   tableName: 'Products'
 });
 
