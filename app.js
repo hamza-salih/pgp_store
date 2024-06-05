@@ -79,6 +79,10 @@ app.get('/home', (req, res) => {
 app.get('/CreateProduct', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'vendor', 'add_Product.html'));
 });
+
+app.get('/test', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'test.html'));
+});
  // -------------------------------------------------------------------------------------
 
 

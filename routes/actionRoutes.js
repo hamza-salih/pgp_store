@@ -45,6 +45,7 @@ router.post("/login", async (req, res) => {
       req.session.encrypted = true;
       req.session.displayName = user.displayName;
       req.session.pin = user.pin;
+      req.session.utype= user.utype;
       res.redirect("../decrypt");
     } else {
       res.status(404).send("User not found.");

@@ -6,7 +6,7 @@ router.get("/", async (req, res) => {
   if (!req.session.username) {
     return res.json({ error: "User not logged in." });
   }
-  const { displayName, username, publickey, UserID } = req.session;
+  const { displayName, username, publickey, utype } = req.session;
   let { randomMessage } = req.session;
 
   if (publickey && !/-----BEGIN PGP PUBLIC KEY BLOCK-----/.test(publickey)) {
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
       displayName,
       username,
       publickey,
-      UserID,
+      utype,
       encryptedRandomMessage,
     });
   } else {

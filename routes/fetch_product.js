@@ -40,8 +40,7 @@ const { Product } = require("../access_db/product_queries");
 
 router.get("/", async (req, res) => {
     if (!req.session.username) {
-        return res.json({ error: "User not logged in." });
-        
+        return res.json({ error: "User not logged in." }); 
       }
   try {
     const products = await Product.findAll();

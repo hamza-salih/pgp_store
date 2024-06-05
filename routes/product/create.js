@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
 
     const {Name, Description, Price, Quantity, location_from, location_to, type } = req.body;
     await create_product(Name, Description, Price, Quantity, Timestamp, UserID_FK, location_from, location_to, type);
-    res.redirect('login');
+    res.redirect('listProd');
 });
 
 module.exports = router;

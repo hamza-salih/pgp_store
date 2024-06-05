@@ -1,0 +1,30 @@
+.nav-item {
+    text-align: center;
+}
+
+.nav-item span {
+    display: block;
+}
+
+.top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+
+.logout-btn {
+    margin-left: 10px;
+}
+
+.username {
+    top: 7px;
+    position: relative;
+}
+
+.xmr {
+    position: relative;
+    top: 17px;
+    left: 46%;
+    color: orange;
+}
