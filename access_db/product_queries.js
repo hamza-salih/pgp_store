@@ -16,12 +16,13 @@ const Product = sequelize.define('Product', {
     Timestamp: { type: DataTypes.DATE, allowNull: false },
     location_from	: { type: DataTypes.STRING, allowNull: false },
     location_to	: { type: DataTypes.STRING, allowNull: false },
+    type	: { type: DataTypes.STRING, allowNull: false },
   }, {
     timestamps: false,
     tableName: 'Products'
   });
   
-  async function create_product(Name, Description, Price, Quantity, Timestamp, UserID_FK, location_from, location_to){
+  async function create_product(Name, Description, Price, Quantity, Timestamp, UserID_FK, location_from, location_to, type){
       try{
         const new_Product = await Product.create({
           Name: Name,
@@ -31,7 +32,8 @@ const Product = sequelize.define('Product', {
           Timestamp: Timestamp,
           UserID_FK: UserID_FK,
           location_from: location_from,
-          location_to: location_to
+          location_to: location_to,
+          type: type
         });
         return new_Product;
       }catch(error){

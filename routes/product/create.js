@@ -13,8 +13,8 @@ router.post('/', async (req, res) => {
     const currentDate = new Date();
     const Timestamp = currentDate;
 
-    const {Name, Description, Price, Quantity, location_from, location_to } = req.body;
-    await create_product(Name, Description, Price, Quantity, Timestamp, UserID_FK, location_from, location_to);
+    const {Name, Description, Price, Quantity, location_from, location_to, type } = req.body;
+    await create_product(Name, Description, Price, Quantity, Timestamp, UserID_FK, location_from, location_to, type);
     res.redirect('login');
 });
 
