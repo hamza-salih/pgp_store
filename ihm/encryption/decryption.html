@@ -22,19 +22,48 @@
               </div>
               <div class="form-group">
                 <label for="message">Message:</label>
-                <textarea class="form-control" id="message" rows="3" placeholder="Enter the encrypted message"></textarea>
+                <textarea class="form-control" id="message" rows="3" readonly></textarea>
               </div>
               <button type="button" id="decryptBtn" class="btn btn-primary">Decrypt</button>
             </form>
             <textarea class="form-control mt-3" id="decrypted" rows="3" readonly></textarea>
           </div>
         </div>
+        <button type="button" id="decryptBtn" class="btn btn-primary">Back to login page</button>
+
       </div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/4.10.10/openpgp.min.js"></script>
   <script>
+        async function fetchPublicKey() {
+            try {
+                const response = await fetch('/routes/fetch_public_key');
+                const data = await response.json();
+                if (data.error) {
+                    alert(data.error);
+                    console.log('Error fetching public key:', data.error);
+                    return null;
+                }
+                return data.encryptedRandomMessage;
+            } catch (error) {
+                console.error('Error during fetchPublicKey:', error);
+                return null;
+            }
+        }
+
+        async function SetDataToTextArea() {
+          const EncryptedMessage = await fetchPublicKey();
+          if(EncryptedMessage !== null){
+            document.getElementById('message').value = EncryptedMessage;
+          }
+        }
+        SetDataToTextArea();
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
     document.addEventListener('DOMContentLoaded', function () {
       const decryptBtn = document.getElementById('decryptBtn');
       decryptBtn.addEventListener('click', async function () {
