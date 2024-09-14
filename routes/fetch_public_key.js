@@ -25,7 +25,7 @@ router.get("/", async (req, res) => {
       username,
       publickey,
       utype,
-      encryptedRandomMessage,
+      encryptedRandomMessage
     });
   } else {
     return res.json({ error: "No public key." });

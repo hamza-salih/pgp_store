@@ -66,6 +66,9 @@
             window.location.href = '../auth/login';
         }
 
+        function redirectToDecrypt() {
+            window.location.href = '/decryptMessage';
+        }
         window.onload = encryptMessage;
     </script>
 </head>
@@ -80,6 +83,7 @@
             </div>
         </form>
         <button type="button" class="btn btn-custom btn-block" onclick="redirectToLogin()">Decrypt</button>
+        <button type="button" class="btn btn-custom btn-block" onclick="redirectToDecrypt()">Decryption page</button>
     </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

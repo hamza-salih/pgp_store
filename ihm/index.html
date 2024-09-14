@@ -13,12 +13,79 @@
         body{
             background-color: #0d1117;
         }
+
+        .nav-item {
+        text-align: center;
+    }
+
+    .nav-item span {
+        display: block;
+    }
+
+    .top-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+
+    .logout-btn {
+        margin-left: 10px;
+    }
+
+    .username {
+        top: 7px;
+        position: relative;
+    }
+
+    .xmr {
+        position: relative;
+        top: 17px;
+        left: 54%;
+        color: orange;
+        display: none;
+    }
     </style>        
 
 </head>
 
 <body>
-<div id="header"></div>
+    <header>
+        <div class="px-3 py-2 text-bg-dark border-bottom">
+            <div class="container">
+                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                    <li class="nav-item">
+                        <a href="/home" class="nav-link text-secondary">
+                            <span class="material-symbols-outlined">home</span>
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-secondary">
+                            <span class="material-symbols-outlined">dashboard</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="listProd" class="nav-link text-secondary">
+                            <span class="material-symbols-outlined">inventory_2</span>
+                            Products
+                        </a>
+                    </li>
+                    <li class="nav-item top-right">
+                        <a href="#" class="username nav-link text-secondary d-inline-flex">
+                            <span class="material-symbols-outlined">person</span>
+                            <span id="username"></span>
+                        </a>
+                        <button type="button" class="logout-btn btn btn-primary d-inline" onclick="logout()">Logout</button>
+                    </li>
+                    <li class="xmr nav-item">
+                        <span id="xmr-price" class="mr-3"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
 <script>
     
     window.onload = function () {
@@ -81,15 +148,6 @@
     function logout() {
         window.location.href = '/logout';
     }
-
-    fetch('header')
-        .then(response => response.text())
-        .then(html => {
-            document.getElementById('header').innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Error loading header:', error);
-        });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

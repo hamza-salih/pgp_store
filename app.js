@@ -67,6 +67,10 @@ app.get('/decrypt', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'encrypt.html'));
 });
 
+app.get('/decryptMessage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'decryption.html'));
+});
+
 app.get('/listProd', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'product', 'list.html'));
 });
@@ -95,3 +99,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decryption Page</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Decryption</h3>
+          </div>
+          <div class="card-body">
+            <form id="decryptForm">
+              <div class="form-group">
+                <label for="privateKey">Public Key:</label>
+                <textarea class="form-control" id="privateKey" rows="1" placeholder="Enter your Public key"></textarea> 
+              </div>
+              <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea class="form-control" id="message" rows="3" placeholder="Enter the encrypted message"></textarea>
+              </div>
+              <button type="button" id="decryptBtn" class="btn btn-primary">Decrypt</button>
+            </form>
+            <textarea class="form-control mt-3" id="decrypted" rows="3" readonly></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openpgp/4.10.10/openpgp.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const decryptBtn = document.getElementById('decryptBtn');
+      decryptBtn.addEventListener('click', async function () {
+        const privateKey = document.getElementById('privateKey').value.trim();
+        const encryptedMessage = document.getElementById('message').value.trim();
+        const decryptedTextArea = document.getElementById('decrypted');
+
+        try {
+          const privateKeyObj = (await openpgp.key.readArmored(privateKey)).keys[0];
+          await privateKeyObj.decrypt(prompt('Enter passphrase for the private key')); // Prompt for passphrase
+          const decryptedMessage = await openpgp.decrypt({
+            message: await openpgp.message.readArmored(encryptedMessage),
+            privateKeys: [privateKeyObj]
+          });
+          decryptedTextArea.value = decryptedMessage.data;
+        } catch (error) {
+          decryptedTextArea.value = 'Error: ' + error.message;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
