@@ -17,8 +17,8 @@
           <div class="card-body">
             <form id="decryptForm">
               <div class="form-group">
-                <label for="privateKey">Public Key:</label>
-                <textarea class="form-control" id="privateKey" rows="1" placeholder="Enter your Public key"></textarea> 
+                <label for="privateKey">Private Key:</label>
+                <textarea class="form-control" id="privateKey" rows="1" placeholder="Enter your Private key"></textarea> 
               </div>
               <div class="form-group">
                 <label for="message">Message:</label>
@@ -29,7 +29,7 @@
             <textarea class="form-control mt-3" id="decrypted" rows="3" readonly></textarea>
           </div>
         </div>
-        <button type="button" id="decryptBtn" class="btn btn-primary">Back to login page</button>
+        <button type="button" id="decryptBtn" class="btn btn-primary" onclick="redirectToLogin()">Back to login page</button>
 
       </div>
     </div>
@@ -61,6 +61,10 @@
         }
         SetDataToTextArea();
 
+        function redirectToLogin() {
+            window.location.href = '../auth/login';
+        }
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -73,7 +77,8 @@
 
         try {
           const privateKeyObj = (await openpgp.key.readArmored(privateKey)).keys[0];
-          await privateKeyObj.decrypt(prompt('Enter passphrase for the private key')); // Prompt for passphrase
+          await privateKeyObj.decrypt(prompt('Enter passphrase for the private key \nand note that youre private key is havely secured by us ')); // Prompt for passphrase
+          
           const decryptedMessage = await openpgp.decrypt({
             message: await openpgp.message.readArmored(encryptedMessage),
             privateKeys: [privateKeyObj]
