@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +9,32 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
     <div class="container mt-5">
         <h2>Create Post</h2>
         <form id="createPostForm">
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <!-- <select class="form-control" id="subject">
+                <option value="Technology">Technology</option>
+                <option value="Health">Health</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Science">Science</option>
+                <option value="Education">Education</option>
+                <option value="Events">Events</option>
+                <option value="Business">Business</option>
+            </select> -->
+                <input type="text" class="form-control" id="subject" placeholder="Enter The Subject" required>
+            </div>
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" placeholder="Enter post title" required>
             </div>
             <div class="form-group">
                 <label for="content">Content</label>
-                <textarea class="form-control" id="content" rows="5" placeholder="Enter post content" required></textarea>
+                <textarea class="form-control" id="content" rows="5" placeholder="Enter post content"
+                    required></textarea>
             </div>
             <div class="form-group">
                 <label for="authorId">Author ID</label>
@@ -39,13 +55,28 @@
     </div>
 
     <script>
+
+        async function getSessionUserID() {
+            try {
+                const response = await axios.get('/session_info');
+                document.getElementById('authorId').value = response.data.UserID;
+            } catch (error) {
+                console.error('Error fetching session data:', error);
+                alert('Error fetching session data. Please log in.');
+                return null;
+            }
+        }
+
+
+
         document.getElementById('createPostForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
             const authorId = document.getElementById('authorId').value;
-            const tags = document.getElementById('tags').value;
+            const tags = document.getElementById('tags').value.toLowerCase();
+            const subject = document.getElementById('subject').value.toLowerCase();
             const isPublished = false; // Always set to false
 
             try {
@@ -54,6 +85,7 @@
                     Content: content,
                     AuthorID: authorId,
                     Tags: tags,
+                    Subject: subject, // Include the subject in the request
                     IsPublished: isPublished
                 });
                 alert('Post created successfully!');
@@ -64,6 +96,8 @@
         });
     </script>
 
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

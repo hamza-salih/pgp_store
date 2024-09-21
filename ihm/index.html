@@ -98,6 +98,9 @@
                     </div>
                 </div>
             </div>
+            <div class="header-right d-flex align-items-center">
+                <button type="button" class="logout-btn btn btn-success" onclick="addPost()">Add post</button>
+            </div>
         </div>
     </header>
     <script>
@@ -115,6 +118,9 @@
 
         function logout() {
             window.location.href = '/logout';
+        }
+        function addPost() {
+            window.location.href = '/CreatePost';
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
