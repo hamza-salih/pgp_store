@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Post } = require('./path/to/postModel');
+const { Post } = require('../../access_db/product_queries');
 
 router.get('/', async (req, res) => {
     try {

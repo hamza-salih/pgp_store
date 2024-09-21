@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create Post</h2>
+        <form id="createPostForm">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Enter post title" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" rows="5" placeholder="Enter post content" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="authorId">Author ID</label>
+                <input type="number" class="form-control" id="authorId" placeholder="Enter your Author ID" required>
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" class="form-control" id="tags" placeholder="Enter tags (comma separated)">
+            </div>
+            <div class="form-group">
+                <label for="isPublished">Published</label>
+                <select class="form-control" id="isPublished" disabled>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Post</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('createPostForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const authorId = document.getElementById('authorId').value;
+            const tags = document.getElementById('tags').value;
+            const isPublished = false; // Always set to false
+
+            try {
+                const response = await axios.post('/posts', {
+                    Title: title,
+                    Content: content,
+                    AuthorID: authorId,
+                    Tags: tags,
+                    IsPublished: isPublished
+                });
+                alert('Post created successfully!');
+                // window.location.href = '/posts'; // or reset the form
+            } catch (error) {
+                alert('Error creating post: ' + error.response.data.message);
+            }
+        });
+    </script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

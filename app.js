@@ -11,10 +11,10 @@ const logout = require('./routes/auth/logout');
 const register = require('./routes/auth/register');
 
 // Import post routes
-const createPostRoutes = require('./routes/product/create');
-const deletePostRoutes = require('./routes/product/delete');
-const readPostRoutes = require('./routes/product/read');
-const updatePostRoutes = require('./routes/product/update');
+const createPostRoutes = require('./routes/post/create');
+const deletePostRoutes = require('./routes/post/delete');
+const readPostRoutes = require('./routes/post/read');
+const updatePostRoutes = require('./routes/post/update');
 
 const app = express();
 
@@ -75,7 +75,7 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/CreatePost', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ihm', 'user', 'add_Post.html'));
+    res.sendFile(path.join(__dirname, 'ihm', 'post', 'create.html'));
 });
 
 app.get('/test', (req, res) => {

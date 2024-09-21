@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { create_post } = require('./path/to/postModel');
+const { create_post } = require('../../access_db/product_queries');
 
 router.post('/', async (req, res) => {
     const { Title, Content, AuthorID, Tags, IsPublished } = req.body;
