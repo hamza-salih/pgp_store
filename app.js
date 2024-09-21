@@ -4,21 +4,17 @@ const bodyParser = require('body-parser');
 const path = require('path');
 require('dotenv').config();
 
-
 const fetchPublicKeyRouter = require('./routes/fetch_public_key');
-const fetchProductRouter= require('./routes/fetch_product');
-
 const actionRoutes = require('./routes/actionRoutes');
 const ihmRoutes = require('./routes/ihmRoutes');
-// const userRoutes = require('./routes/userRoutes');
 const logout = require('./routes/auth/logout');
 const register = require('./routes/auth/register');
-const InsertProd = require('./routes/product/create');
 
-
-
-
-
+// Import post routes
+const createPostRoutes = require('./routes/product/create');
+const deletePostRoutes = require('./routes/product/delete');
+const readPostRoutes = require('./routes/product/read');
+const updatePostRoutes = require('./routes/product/update');
 
 const app = express();
 
@@ -36,21 +32,20 @@ app.use('/IHM', express.static(path.join(__dirname, 'IHM')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/routes/fetch_public_key', fetchPublicKeyRouter);
-app.use('/routes/fetch_product', fetchProductRouter);
-
 
 app.use('/logout', logout);
 app.use('/register', register);
 
-app.use('/InsertProd', InsertProd);
+// Add post routes
+app.use('/posts', createPostRoutes);
+app.use('/posts', deletePostRoutes);
+app.use('/posts', readPostRoutes);
+app.use('/posts', updatePostRoutes);
 
-
-
- // -------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 app.get('/header', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'public', 'partials', 'header.html'));
 });
-
 
 app.get('/auth/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'auth', 'register.html'));
@@ -71,25 +66,22 @@ app.get('/decryptMessage', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'decryption.html'));
 });
 
-app.get('/listProd', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ihm', 'product', 'list.html'));
+app.get('/listPost', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'post', 'list.html'));
 });
-
 
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'index.html'));
 });
 
-app.get('/CreateProduct', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ihm', 'vendor', 'add_Product.html'));
+app.get('/CreatePost', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'user', 'add_Post.html'));
 });
 
 app.get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'test.html'));
 });
- // -------------------------------------------------------------------------------------
-
-
+// -------------------------------------------------------------------------------------
 
 app.use('/Action_Management', actionRoutes);
 app.use('/IHM', ihmRoutes);
@@ -99,4 +91,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-

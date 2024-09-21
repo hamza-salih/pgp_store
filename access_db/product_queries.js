@@ -1,47 +1,38 @@
 const sequelize = require('./db');
 const { DataTypes } = require('sequelize');
 
-
-const Product = sequelize.define('Product', {
-    ProductID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+const Post = sequelize.define('Post', {
+    PostID: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    Name: { type: DataTypes.STRING, allowNull: false },
-    Description: { type: DataTypes.TEXT, allowNull: false },
-    Price: { type: DataTypes.FLOAT, allowNull: false },
-    Quantity: { type: DataTypes.INTEGER, allowNull: false },
-    UserID_FK: { type: DataTypes.INTEGER, allowNull: true },
-    Timestamp: { type: DataTypes.DATE, allowNull: false },
-    location_from	: { type: DataTypes.STRING, allowNull: false },
-    location_to	: { type: DataTypes.STRING, allowNull: false },
-    type	: { type: DataTypes.STRING, allowNull: false },
-  }, {
+    Title: { type: DataTypes.STRING, allowNull: false },
+    Content: { type: DataTypes.TEXT, allowNull: false },
+    AuthorID: { type: DataTypes.INTEGER, allowNull: false }, // ID of the user who created the post
+    CreatedAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
+    UpdatedAt: { type: DataTypes.DATE, allowNull: true },
+    Tags: { type: DataTypes.STRING, allowNull: true }, // Optional tags for categorization
+    IsPublished: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true }, // Published status
+}, {
     timestamps: false,
-    tableName: 'Products'
-  });
-  
-  async function create_product(Name, Description, Price, Quantity, Timestamp, UserID_FK, location_from, location_to, type){
-      try{
-        const new_Product = await Product.create({
-          Name: Name,
-          Description: Description,
-          Price: Price,
-          Quantity: Quantity,
-          Timestamp: Timestamp,
-          UserID_FK: UserID_FK,
-          location_from: location_from,
-          location_to: location_to,
-          type: type
+    tableName: 'Posts'
+});
+
+async function create_post(Title, Content, AuthorID, Tags, IsPublished) {
+    try {
+        const new_Post = await Post.create({
+            Title: Title,
+            Content: Content,
+            AuthorID: AuthorID,
+            Tags: Tags,
+            IsPublished: IsPublished
         });
-        return new_Product;
-      }catch(error){
-        console.error('Error inserting a product:', error);
+        return new_Post;
+    } catch (error) {
+        console.error('Error inserting a post:', error);
         throw error;
-      }
-  }
-  
-  
-  module.exports = {create_product, Product };
-  
+    }
+}
+
+module.exports = { create_post, Post };
