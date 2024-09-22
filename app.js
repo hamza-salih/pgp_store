@@ -81,6 +81,10 @@ app.get('/CreatePost', (req, res) => {
 app.get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'test.html'));
 });
+
+app.get('/Dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'admin', 'dashboard.html'));
+});
 // -------------------------------------------------------------------------------------
 
 app.use('/Action_Management', actionRoutes);
