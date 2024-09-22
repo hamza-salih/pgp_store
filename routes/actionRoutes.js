@@ -41,6 +41,7 @@ router.post("/login", async (req, res) => {
         req.session.randomMessage = generatedRandomMessage;
       }
       req.session.publickey = user.PGPKey;
+      req.session.userID = user.userID;
       req.session.username = username;
       req.session.encrypted = true;
       req.session.displayName = user.displayName;

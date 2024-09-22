@@ -9,8 +9,15 @@ const Post = sequelize.define('Post', {
   },
   Title: { type: DataTypes.STRING, allowNull: false },
   Content: { type: DataTypes.TEXT, allowNull: false },
-  AuthorID: { type: DataTypes.INTEGER, allowNull: false },
-  Subject: { type: DataTypes.STRING, allowNull: false }, // Add Subject field
+  userID: { 
+      type: DataTypes.INTEGER, 
+      allowNull: false,
+      references: {
+          model: 'Users',
+          key: 'userID'
+      }
+  },
+  Subject: { type: DataTypes.STRING, allowNull: false },
   CreatedAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
   UpdatedAt: { type: DataTypes.DATE, allowNull: true },
   Tags: { type: DataTypes.STRING, allowNull: true },
@@ -20,21 +27,28 @@ const Post = sequelize.define('Post', {
   tableName: 'Posts'
 });
 
-async function create_post(Title, Content, AuthorID, Tags, IsPublished, Subject) {
+// Syncing the models with the database
+async function syncModels() {
+    await sequelize.sync();
+}
+
+syncModels();
+
+async function create_post(Title, Content, userID, Tags, IsPublished, Subject) {
   try {
-    console.log({ Title, Content, AuthorID, Tags, Subject, IsPublished });
-      const new_Post = await Post.create({
-          Title: Title,
-          Content: Content,
-          AuthorID: AuthorID,
-          Tags: Tags,
-          IsPublished: IsPublished,
-          Subject: Subject // Include Subject in the creation
-      });
-      return new_Post;
+    console.log({ Title, Content, userID, Tags, Subject, IsPublished });
+    const new_Post = await Post.create({
+        Title: Title,
+        Content: Content,
+        userID: userID,
+        Tags: Tags,
+        IsPublished: IsPublished,
+        Subject: Subject
+    });
+    return new_Post;
   } catch (error) {
-      console.error('Error inserting a post:', error);
-      throw error;
+    console.error('Error inserting a post:', error);
+    throw error;
   }
 }
 
