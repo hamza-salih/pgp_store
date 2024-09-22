@@ -15,10 +15,10 @@ const createPostRoutes = require('./routes/post/create');
 const readPostRoutes = require('./routes/post/read');
 const updatePostRoutes = require('./routes/post/update');
 const deletePostRoute = require('./routes/post/delete');
+const detailsRouter = require('./routes/post/details');
 
 // User route
 const displayUser = require('./routes/user/list');
-
 
 const app = express();
 
@@ -43,15 +43,14 @@ app.use('/register', register);
 // Add post routes
 app.use('/posts', createPostRoutes);
 app.use('/posts', readPostRoutes);
+app.use('/postDetails', detailsRouter);
 app.use('/posts', updatePostRoutes);
 app.use('/posts/delete', deletePostRoute);
 
-
-// add user routes 
+// Add user routes 
 app.use('/users', displayUser);
 
-
-// -------------------------------------------------------------------------------------
+// Serve static files for partials and pages
 app.get('/header', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'public', 'partials', 'header.html'));
 });
@@ -67,6 +66,7 @@ app.get('/auth/login', (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'auth', 'login.html'));
 });
+
 app.get('/decrypt', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'encrypt.html'));
 });
@@ -87,6 +87,14 @@ app.get('/CreatePost', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'post', 'create.html'));
 });
 
+app.get('/editPost', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'post', 'edit.html'));
+});
+
+app.get('/postDetails', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'post', 'details.html'));
+});
+
 app.get('/test', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'test.html'));
 });
@@ -94,6 +102,7 @@ app.get('/test', (req, res) => {
 app.get('/Dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'admin', 'dashboard.html'));
 });
+
 // -------------------------------------------------------------------------------------
 
 app.use('/Action_Management', actionRoutes);

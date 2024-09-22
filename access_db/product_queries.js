@@ -52,10 +52,8 @@ async function create_post(Title, Content, userID, Tags, IsPublished, Subject) {
   }
 }
 
-
 async function delete_post(PostID) {
   try {
-    // Find the post by its ID and delete it
     const deletedPost = await Post.destroy({ where: { PostID } });
     return deletedPost; // Returns the number of rows deleted (1 if successful, 0 if not)
   } catch (error) {
@@ -64,5 +62,24 @@ async function delete_post(PostID) {
   }
 }
 
+async function update_post(PostID, updatedData) {
+  try {
+    const [updated] = await Post.update(updatedData, { where: { PostID } });
+    return updated; // Returns the number of rows updated (1 if successful, 0 if not)
+  } catch (error) {
+    console.error('Error updating the post:', error);
+    throw error;
+  }
+}
 
-module.exports = { create_post, delete_post, Post };
+async function get_post_by_id(PostID) {
+  try {
+    const post = await Post.findByPk(PostID);
+    return post;
+  } catch (error) {
+    console.error('Error fetching the post:', error);
+    throw error;
+  }
+}
+
+module.exports = { create_post, delete_post, update_post, get_post_by_id, Post };

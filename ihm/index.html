@@ -271,30 +271,32 @@
                 });
         }
 
-        // Display posts
         function displayPosts(posts) {
-            const postList = document.getElementById('postList');
-            postList.innerHTML = '';
+    const postList = document.getElementById('postList');
+    postList.innerHTML = '';
 
-            posts.forEach(post => {
-                const postCard = `
-                    <div class="card post-card mr-4">
-                        <div class="post-username">Posted by: ${post.userID}</div>
-                        <div class="card-body">
-                            <h5 class="card-title post-title">${post.Title}</h5>
-                            <p class="card-text post-body">${post.Content.substring(0, 200)}...</p>
-                            <div class="post-footer">
-                                Tags: ${post.Tags} | Subject: ${post.Subject}
-                            </div>
-                            <a href="/postDetails?id=${post.PostID}" class="btn btn-info btn-sm mt-3" style="position: absolute; bottom: 10px; right: 10px;">
-                                Details
-                            </a>
+    posts.forEach(post => {
+        if (post.IsPublished) {
+            const postCard = `
+                <div class="card post-card mr-4">
+                    <div class="post-username">Posted by: ${post.userID}</div>
+                    <div class="card-body">
+                        <h5 class="card-title post-title">${post.Title}</h5>
+                        <p class="card-text post-body">${post.Content.substring(0, 200)}...</p>
+                        <div class="post-footer">
+                            Tags: ${post.Tags} | Subject: ${post.Subject}
                         </div>
+                        <a href="/postDetails?id=${post.PostID}" class="btn btn-info btn-sm mt-3" style="position: absolute; bottom: 10px; right: 10px;">
+                            Details
+                        </a>
                     </div>
-                `;
-                postList.innerHTML += postCard;
-            });
+                </div>
+            `;
+            postList.innerHTML += postCard;
         }
+    });
+}
+
 
         // Apply filters function
         function applyFilters() {

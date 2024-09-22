@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Edit Post</h2>
+        <form id="editPostForm">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <input type="text" class="form-control" id="tags">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="isPublished" checked>
+                <label class="form-check-label" for="isPublished">Publish</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Post</button>
+            <div id="errorMessage" class="text-danger mt-2"></div>
+        </form>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+
+        window.onload = function () {
+            fetch(`/posts/${postId}`)
+                .then(response => response.json())
+                .then(post => {
+                    document.getElementById('title').value = post.Title;
+                    document.getElementById('content').value = post.Content;
+                    document.getElementById('tags').value = post.Tags;
+                    document.getElementById('isPublished').checked = post.IsPublished; // Set checkbox state
+                })
+                .catch(error => console.error('Error fetching post:', error));
+
+            document.getElementById('editPostForm').onsubmit = function (event) {
+                event.preventDefault();
+                updatePost();
+            };
+        };
+
+        function updatePost() {
+            const updatedPost = {
+                Title: document.getElementById('title').value,
+                Content: document.getElementById('content').value,
+                Tags: document.getElementById('tags').value,
+                IsPublished: document.getElementById('isPublished').checked // Get checkbox value
+            };
+
+            fetch(`/posts/update/${postId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedPost)
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/home';
+                } else {
+                    return response.json().then(err => {
+                        document.getElementById('errorMessage').innerText = err.message;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').innerText = 'An unexpected error occurred. Please try again.';
+            });
+        }
+    </script>
+</body>
+
+</html>

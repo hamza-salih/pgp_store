@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 id="postTitle"></h2>
+        <p><strong>Subject:</strong> <span id="postSubject"></span></p>
+        <p><strong>Content:</strong></p>
+        <p id="postContent"></p>
+        <p><strong>Tags:</strong> <span id="postTags"></span></p>
+        <p><strong>Published:</strong> <span id="postPublished"></span></p>
+        <p><strong>Created At:</strong> <span id="postCreatedAt"></span></p>
+        <p><strong>Updated At:</strong> <span id="postUpdatedAt"></span></p>
+        <a href="/home" class="btn btn-primary mt-3">Back to Posts</a>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+
+        window.onload = function () {
+            fetch(`/posts/${postId}`)
+                .then(response => response.json())
+                .then(post => {
+                    document.getElementById('postTitle').innerText = post.Title;
+                    document.getElementById('postSubject').innerText = post.Subject;
+                    document.getElementById('postContent').innerText = post.Content;
+                    document.getElementById('postTags').innerText = post.Tags || 'No tags';
+                    document.getElementById('postPublished').innerText = post.IsPublished ? 'Yes' : 'No';
+                    document.getElementById('postCreatedAt').innerText = new Date(post.CreatedAt).toLocaleString();
+                    document.getElementById('postUpdatedAt').innerText = post.UpdatedAt ? new Date(post.UpdatedAt).toLocaleString() : 'Not updated yet';
+                })
+                .catch(error => {
+                    console.error('Error fetching post details:', error);
+                });
+        };
+    </script>
+</body>
+
+</html>

@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const user = await getUserById(id); // Implement this function
+        const user = await getUserById(id); 
         if (user) {
             res.status(200).json(user);
         } else {
@@ -28,4 +28,4 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;  // This line is important!
+module.exports = router;
