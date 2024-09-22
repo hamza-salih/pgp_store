@@ -14,6 +14,7 @@ const register = require('./routes/auth/register');
 const createPostRoutes = require('./routes/post/create');
 const readPostRoutes = require('./routes/post/read');
 const updatePostRoutes = require('./routes/post/update');
+const deletePostRoute = require('./routes/post/delete');
 
 // User route
 const displayUser = require('./routes/user/list');
@@ -43,6 +44,7 @@ app.use('/register', register);
 app.use('/posts', createPostRoutes);
 app.use('/posts', readPostRoutes);
 app.use('/posts', updatePostRoutes);
+app.use('/posts/delete', deletePostRoute);
 
 
 // add user routes 

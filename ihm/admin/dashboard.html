@@ -76,7 +76,7 @@
     </div>
 
     <script>
-        let allPosts = []; // Store all posts
+        let allPosts = [];
         window.onload = function () {
             fetchPosts();
             fetch('/routes/fetch_public_key')
@@ -86,32 +86,28 @@
                         window.location.href = '/logout';
                     } else {
                         document.getElementById('username').innerText = data.displayName;
-                        // Check utype and conditionally add the dashboard button
                         if (data.utype == 2) {
                             const dashboardButton = document.createElement('button');
                             dashboardButton.type = 'button';
-                            dashboardButton.className = 'btn btn-warning ml-2'; // Add margin-left for spacing
+                            dashboardButton.className = 'btn btn-warning ml-2';
                             dashboardButton.innerText = 'Dashboard';
                             dashboardButton.onclick = function () {
-                                window.location.href = '/dashboard'; // Change to your dashboard URL
+                                window.location.href = '/dashboard';
                             };
-                            // Append the button next to the Add button
                             document.querySelector('.header-right').appendChild(dashboardButton);
                         }
                     }
                 });
 
-            // Add event listeners to the subject links in the header
             document.querySelectorAll('.nav-item a').forEach(link => {
                 link.addEventListener('click', function (e) {
-                    e.preventDefault(); // Prevent default action
+                    e.preventDefault();
                     const subject = this.childNodes[2].textContent.trim();
                     console.log("Filtering for subject:", subject);
-                    filterBySubject(subject); // Call the filter function
+                    filterBySubject(subject);
                 });
             });
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', function (event) {
                 const dropdown = document.getElementById('dropdown');
                 const usernameLink = document.querySelector('.username');
@@ -131,9 +127,8 @@
             fetchPosts();
         };
 
-        // Fetch posts from the server
         function fetchPosts() {
-            fetch('/posts') // Replace with your API endpoint
+            fetch('/posts')
                 .then(response => response.json())
                 .then(data => {
                     allPosts = data;
@@ -142,13 +137,10 @@
                 .catch(error => console.error('Error fetching posts:', error));
         }
 
-        // Display posts with edit and delete buttons
-// Display posts with edit and delete buttons
 function displayPosts(posts) {
     const postList = document.getElementById('postList');
     postList.innerHTML = '';
 
-    // Create a Bootstrap row for the cards
     const row = document.createElement('div');
     row.className = 'row';
 
@@ -214,27 +206,28 @@ function showUsers() {
 
         // Delete post
         function deletePost(postId) {
-            fetch(`/posts/${postId}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (response.status == 204) {
-                        allPosts = allPosts.filter(post => post.PostID !== postId);
-                        displayPosts(allPosts);
-                    } else {
-                        console.error('Error deleting post:', response);
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+    fetch(`/posts/delete/${postId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            allPosts = allPosts.filter(post => post.PostID !== postId);
+            displayPosts(allPosts);
+        } else if (response.status === 404) {
+            console.error('Post not found');
+        } else {
+            console.error('Error deleting post:', response);
         }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
-        // Edit post function (redirect or open modal)
         function editPost(postId) {
             window.location.href = `/editPost?id=${postId}`;
         }
 
         function viewUser(userId) {
-    window.location.href = `/userDetails?id=${userId}`; // Change to your user details URL
+    window.location.href = `/userDetails?id=${userId}`;
 }
     </script>
 

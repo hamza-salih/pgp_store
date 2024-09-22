@@ -52,4 +52,17 @@ async function create_post(Title, Content, userID, Tags, IsPublished, Subject) {
   }
 }
 
-module.exports = { create_post, Post };
+
+async function delete_post(PostID) {
+  try {
+    // Find the post by its ID and delete it
+    const deletedPost = await Post.destroy({ where: { PostID } });
+    return deletedPost; // Returns the number of rows deleted (1 if successful, 0 if not)
+  } catch (error) {
+    console.error('Error deleting the post:', error);
+    throw error;
+  }
+}
+
+
+module.exports = { create_post, delete_post, Post };
