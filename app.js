@@ -12,9 +12,12 @@ const register = require('./routes/auth/register');
 
 // Import post routes
 const createPostRoutes = require('./routes/post/create');
-const deletePostRoutes = require('./routes/post/delete');
 const readPostRoutes = require('./routes/post/read');
 const updatePostRoutes = require('./routes/post/update');
+
+// User route
+const displayUser = require('./routes/user/list');
+
 
 const app = express();
 
@@ -38,9 +41,13 @@ app.use('/register', register);
 
 // Add post routes
 app.use('/posts', createPostRoutes);
-app.use('/posts', deletePostRoutes);
 app.use('/posts', readPostRoutes);
 app.use('/posts', updatePostRoutes);
+
+
+// add user routes 
+app.use('/users', displayUser);
+
 
 // -------------------------------------------------------------------------------------
 app.get('/header', (req, res) => {
@@ -89,7 +96,6 @@ app.get('/Dashboard', (req, res) => {
 
 app.use('/Action_Management', actionRoutes);
 app.use('/IHM', ihmRoutes);
-// app.use('/users', userRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

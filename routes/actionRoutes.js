@@ -6,14 +6,14 @@ const {
   registerUser,
 } = require("../access_db/user_queries");
 
-router.use(
-  session({
-    secret: "",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
-  })
-);
+// router.use(
+//   session({
+//     secret: "",
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true },
+//   })
+// );
 
 router.get("/fetch_public_key", (req, res) => {
   if (!req.session.username) {
