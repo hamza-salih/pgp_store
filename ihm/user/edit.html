@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update User</title>
+</head>
+<body>
+  <h1>Update Your Profile</h1>
+  
+  <form id="updateForm">
+    <label for="displayName">Display Name:</label><br>
+    <input type="text" id="displayName" name="displayName"><br><br>
+
+    <label for="Username">Username:</label><br>
+    <input type="text" id="Username" name="Username" readonly><br><br>
+
+    <label for="Email">Email:</label><br>
+    <input type="email" id="Email" name="Email"><br><br>
+
+    <label for="Address">Address:</label><br>
+    <input type="text" id="Address" name="Address"><br><br>
+
+    <label for="PGPKey">PGP Key:</label><br>
+    <textarea id="PGPKey" name="PGPKey"></textarea><br><br>
+
+    <label for="pin">PIN:</label><br>
+    <input type="number" id="pin" name="pin"><br><br>
+
+    <input type="text" id="utype" name="utype" hidden value="1"><br><br>
+
+    <button type="submit">Update</button>
+  </form>
+
+  <div id="responseMessage"></div>
+
+  <script>
+fetch('/routes/fetch_public_key')
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      window.location.href = '/logout';
+    } else {
+      console.log(data);
+      document.getElementById('displayName').value = data.displayName;
+      document.getElementById('Username').value = data.username;
+      document.getElementById('Email').value = data.Email;
+      document.getElementById('Address').value = data.Address;
+      document.getElementById('PGPKey').value = data.publickey;
+      document.getElementById('pin').value = data.pin;
+
+
+
+    }
+  });
+
+document.getElementById('updateForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const displayName = document.getElementById('displayName').value;
+  const Username = document.getElementById('Username').value;
+  const Password = document.getElementById('Password').value;
+  const Email = document.getElementById('Email').value;
+  const Address = document.getElementById('Address').value;
+  const PGPKey = document.getElementById('PGPKey').value;
+  const pin = document.getElementById('pin').value;
+  const utype = document.getElementById('utype').value;
+
+  const userData = {
+    displayName,
+    Password,
+    Email,
+    Address,
+    PGPKey,
+    pin,
+    utype
+  };
+
+  Object.keys(userData).forEach(key => userData[key] === "" && delete userData[key]);
+
+  try {
+    const response = await fetch(`/users/update/${Username}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+      document.getElementById('responseMessage').textContent = 'User updated successfully!';
+    } else {
+      document.getElementById('responseMessage').textContent = `Error: ${result.message}`;
+    }
+  } catch (error) {
+    document.getElementById('responseMessage').textContent = 'Failed to update user: ' + error.message;
+  }
+});
+
+// fetchUserDetails();
+  </script>
+
+</body>
+</html>

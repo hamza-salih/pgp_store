@@ -50,8 +50,22 @@ async function registerUser(	displayName, username, password, email, address, pg
   }
 }
 async function getAllUsers() {
-  return await User.findAll(); // This fetches all users using Sequelize
+  return await User.findAll();
 }
+
+
+async function update_user(userID, updatedData) {
+  try {
+    const [updatedCount] = await User.update(updatedData, { where: { userID } });
+    return updatedCount;
+  } catch (error) {
+    console.error('Error updating the user:', error);
+    throw error;
+  }
+}
+
+module.exports = { getUserByUsername, registerUser, getAllUsers, update_user };
+
 
 
 

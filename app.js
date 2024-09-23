@@ -5,6 +5,7 @@ const path = require('path');
 require('dotenv').config();
 
 const fetchPublicKeyRouter = require('./routes/fetch_public_key');
+
 const actionRoutes = require('./routes/actionRoutes');
 const ihmRoutes = require('./routes/ihmRoutes');
 const logout = require('./routes/auth/logout');
@@ -19,6 +20,7 @@ const detailsRouter = require('./routes/post/details');
 
 // User route
 const displayUser = require('./routes/user/list');
+const userUpdateRouter = require('./routes/user/update');
 
 const app = express();
 
@@ -36,7 +38,6 @@ app.use('/IHM', express.static(path.join(__dirname, 'IHM')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use('/routes/fetch_public_key', fetchPublicKeyRouter);
-
 app.use('/logout', logout);
 app.use('/register', register);
 
@@ -49,11 +50,14 @@ app.use('/posts/delete', deletePostRoute);
 
 // Add user routes 
 app.use('/users', displayUser);
+app.use('/users', userUpdateRouter);
 
-// Serve static files for partials and pages
+
+
 app.get('/header', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'public', 'partials', 'header.html'));
 });
+
 
 app.get('/auth/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'auth', 'register.html'));
@@ -102,6 +106,11 @@ app.get('/test', (req, res) => {
 app.get('/Dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'admin', 'dashboard.html'));
 });
+
+app.get('/settings', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'user', 'edit.html'));
+});
+
 
 // -------------------------------------------------------------------------------------
 

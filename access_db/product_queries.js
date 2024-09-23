@@ -27,7 +27,6 @@ const Post = sequelize.define('Post', {
   tableName: 'Posts'
 });
 
-// Syncing the models with the database
 async function syncModels() {
     await sequelize.sync();
 }
