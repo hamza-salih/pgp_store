@@ -15,7 +15,7 @@ router.put('/update/:id', async (req, res) => {
 
         if (updatedCount > 0) {
             console.log('Post updated successfully:', id);
-            res.status(200).json({ message: 'Post updated successfully' }); // Send a success message
+            res.status(200).json({ message: 'Post updated successfully' });
         } else {
             console.log('Post not found:', id);
             res.status(404).json({ message: 'Post not found' });
