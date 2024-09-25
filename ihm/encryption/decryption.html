@@ -77,7 +77,7 @@
 
         try {
           const privateKeyObj = (await openpgp.key.readArmored(privateKey)).keys[0];
-          await privateKeyObj.decrypt(prompt('Enter passphrase for the private key \nand note that youre private key is havely secured by us ')); // Prompt for passphrase
+          await privateKeyObj.decrypt(prompt('Enter passphrase for the private key \nand note that youre private key is havely secured by us '));
           
           const decryptedMessage = await openpgp.decrypt({
             message: await openpgp.message.readArmored(encryptedMessage),

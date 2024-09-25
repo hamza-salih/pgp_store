@@ -54,7 +54,7 @@ async function create_post(Title, Content, userID, Tags, IsPublished, Subject) {
 async function delete_post(PostID) {
   try {
     const deletedPost = await Post.destroy({ where: { PostID } });
-    return deletedPost; // Returns the number of rows deleted (1 if successful, 0 if not)
+    return deletedPost;
   } catch (error) {
     console.error('Error deleting the post:', error);
     throw error;
@@ -64,7 +64,7 @@ async function delete_post(PostID) {
 async function update_post(PostID, updatedData) {
   try {
     const [updated] = await Post.update(updatedData, { where: { PostID } });
-    return updated; // Returns the number of rows updated (1 if successful, 0 if not)
+    return updated;
   } catch (error) {
     console.error('Error updating the post:', error);
     throw error;

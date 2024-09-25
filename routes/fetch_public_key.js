@@ -30,7 +30,6 @@ router.get("/", async (req, res) => {
       pin,
       Email,
       Address
-      
     });
   } else {
     return res.json({ error: "No public key." });

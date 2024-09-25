@@ -7,7 +7,7 @@ require('dotenv').config();
 const fetchPublicKeyRouter = require('./routes/fetch_public_key');
 
 const actionRoutes = require('./routes/actionRoutes');
-const ihmRoutes = require('./routes/ihmRoutes');
+// const ihmRoutes = require('./routes/ihmRoutes');
 const logout = require('./routes/auth/logout');
 const register = require('./routes/auth/register');
 
@@ -17,8 +17,6 @@ const readPostRoutes = require('./routes/post/read');
 const updatePostRoutes = require('./routes/post/update');
 const deletePostRoute = require('./routes/post/delete');
 const detailsRouter = require('./routes/post/details');
-
-// User route
 const displayUser = require('./routes/user/list');
 const userUpdateRouter = require('./routes/user/update');
 
@@ -41,14 +39,14 @@ app.use('/routes/fetch_public_key', fetchPublicKeyRouter);
 app.use('/logout', logout);
 app.use('/register', register);
 
-// Add post routes
+// post routes
 app.use('/posts', createPostRoutes);
 app.use('/posts', readPostRoutes);
 app.use('/postDetails', detailsRouter);
 app.use('/posts', updatePostRoutes);
 app.use('/posts/delete', deletePostRoute);
 
-// Add user routes 
+// user routes 
 app.use('/users', displayUser);
 app.use('/users', userUpdateRouter);
 
@@ -115,7 +113,7 @@ app.get('/settings', (req, res) => {
 // -------------------------------------------------------------------------------------
 
 app.use('/Action_Management', actionRoutes);
-app.use('/IHM', ihmRoutes);
+// app.use('/IHM', ihmRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
