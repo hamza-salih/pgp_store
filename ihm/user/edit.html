@@ -4,103 +4,118 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Update User</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <h1>Update Your Profile</h1>
-  
-  <form id="updateForm">
-    <label for="displayName">Display Name:</label><br>
-    <input type="text" id="displayName" name="displayName"><br><br>
+  <div class="container mt-5">
+    <h1 class="text-center">Update Your Profile</h1>
+    
+    <form id="updateForm" class="mt-4">
+      <div class="form-group">
+        <label for="displayName">Display Name:</label>
+        <input type="text" class="form-control" id="displayName" name="displayName" required>
+      </div>
 
-    <label for="Username">Username:</label><br>
-    <input type="text" id="Username" name="Username" readonly><br><br>
+      <div class="form-group">
+        <label for="Username">Username:</label>
+        <input type="text" class="form-control" id="Username" name="Username" readonly>
+      </div>
 
-    <label for="Email">Email:</label><br>
-    <input type="email" id="Email" name="Email"><br><br>
+      <div class="form-group">
+        <label for="Email">Email:</label>
+        <input type="email" class="form-control" id="Email" name="Email" required>
+      </div>
 
-    <label for="Address">Address:</label><br>
-    <input type="text" id="Address" name="Address"><br><br>
+      <div class="form-group">
+        <label for="Address">Address:</label>
+        <input type="text" class="form-control" id="Address" name="Address" required>
+      </div>
 
-    <label for="PGPKey">PGP Key:</label><br>
-    <textarea id="PGPKey" name="PGPKey"></textarea><br><br>
+      <div class="form-group">
+        <label for="PGPKey">PGP Key:</label>
+        <textarea class="form-control" id="PGPKey" name="PGPKey" rows="3" required></textarea>
+      </div>
 
-    <label for="pin">PIN:</label><br>
-    <input type="number" id="pin" name="pin"><br><br>
+      <div class="form-group">
+        <label for="pin">PIN:</label>
+        <input type="number" class="form-control" id="pin" name="pin" required>
+      </div>
 
-    <input type="text" id="utype" name="utype" hidden value="1"><br><br>
+      <input type="text" id="utype" name="utype" hidden value="1">
 
-    <button type="submit">Update</button>
-  </form>
+      <button type="submit" class="btn btn-primary btn-block">Update</button>
+    </form>
 
-  <div id="responseMessage"></div>
+    <div id="responseMessage" class="mt-3"></div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies (optional for this case) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-fetch('/routes/fetch_public_key')
-  .then(response => response.json())
-  .then(data => {
-    if (data.error) {
-      window.location.href = '/logout';
-    } else {
-      console.log(data);
-      document.getElementById('displayName').value = data.displayName;
-      document.getElementById('Username').value = data.username;
-      document.getElementById('Email').value = data.Email;
-      document.getElementById('Address').value = data.Address;
-      document.getElementById('PGPKey').value = data.publickey;
-      document.getElementById('pin').value = data.pin;
+    fetch('/routes/fetch_public_key')
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          window.location.href = '/logout';
+        } else {
+          console.log(data);
+          document.getElementById('displayName').value = data.displayName;
+          document.getElementById('Username').value = data.username;
+          document.getElementById('Email').value = data.Email;
+          document.getElementById('Address').value = data.Address;
+          document.getElementById('PGPKey').value = data.publickey;
+          document.getElementById('pin').value = data.pin;
+        }
+      });
 
+    document.getElementById('updateForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
 
+      const displayName = document.getElementById('displayName').value;
+      const Username = document.getElementById('Username').value;
+      const Password = document.getElementById('Password') ? document.getElementById('Password').value : ''; // Check if Password field exists
+      const Email = document.getElementById('Email').value;
+      const Address = document.getElementById('Address').value;
+      const PGPKey = document.getElementById('PGPKey').value;
+      const pin = document.getElementById('pin').value;
+      const utype = document.getElementById('utype').value;
 
-    }
-  });
+      const userData = {
+        displayName,
+        Password,
+        Email,
+        Address,
+        PGPKey,
+        pin,
+        utype
+      };
 
-document.getElementById('updateForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+      Object.keys(userData).forEach(key => userData[key] === "" && delete userData[key]);
 
-  const displayName = document.getElementById('displayName').value;
-  const Username = document.getElementById('Username').value;
-  const Password = document.getElementById('Password').value;
-  const Email = document.getElementById('Email').value;
-  const Address = document.getElementById('Address').value;
-  const PGPKey = document.getElementById('PGPKey').value;
-  const pin = document.getElementById('pin').value;
-  const utype = document.getElementById('utype').value;
+      try {
+        const response = await fetch(`/users/update/${Username}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
 
-  const userData = {
-    displayName,
-    Password,
-    Email,
-    Address,
-    PGPKey,
-    pin,
-    utype
-  };
-
-  Object.keys(userData).forEach(key => userData[key] === "" && delete userData[key]);
-
-  try {
-    const response = await fetch(`/users/update/${Username}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
+        const result = await response.json();
+        
+        if (response.ok) {
+          document.getElementById('responseMessage').innerHTML = '<div class="alert alert-success">User updated successfully!</div>';
+        } else {
+          document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">Error: ${result.message}</div>`;
+        }
+      } catch (error) {
+        document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">Failed to update user: ${error.message}</div>`;
+      }
     });
-
-    const result = await response.json();
-    
-    if (response.ok) {
-      document.getElementById('responseMessage').textContent = 'User updated successfully!';
-    } else {
-      document.getElementById('responseMessage').textContent = `Error: ${result.message}`;
-    }
-  } catch (error) {
-    document.getElementById('responseMessage').textContent = 'Failed to update user: ' + error.message;
-  }
-});
-
-// fetchUserDetails();
   </script>
-
 </body>
 </html>
