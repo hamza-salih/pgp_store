@@ -58,7 +58,7 @@
             <div class="col-auto sidebar">
                 <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
                     <li class="nav-item">
-                        <a href="/home" class="nav-link py-3 border-bottom rounded-0" aria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Home" data-bs-original-title="Home">
+                        <a href="/" class="nav-link py-3 border-bottom rounded-0" onclick="Home()" onlciaria-current="page" data-bs-toggle="tooltip" data-bs-placement="right" aria-label="Home" data-bs-original-title="Home">
                             <span class="material-symbols-outlined">home</span>
                             Home
                         </a>
@@ -172,26 +172,29 @@
 
             postList.appendChild(row);
         }
-
         function displayUsers(users) {
-            const postList = document.getElementById('postList');
-            postList.innerHTML = '';
-
-            users.forEach(user => {
-                const userCard = `
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">${user.displayName}</h5>
-                                <p class="card-text">Email: ${user.Email}</p>
-                                <button class="btn btn-info btn-sm" onclick="viewUser(${user.id})">View</button>
-                            </div>
-                        </div>
+    const postList = document.getElementById('postList');
+    postList.innerHTML = '';
+    const row = document.createElement('div');
+    row.className = 'row';
+    users.forEach(user => {
+        const userCard = `
+            <div class="col-md-4 mb-4"> <!-- Each user is in a column -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${user.displayName}</h5>
+                        <p class="card-text">Email: ${user.Email}</p>
+                        <button class="btn btn-info btn-sm" onclick="viewUser()">View</button>
                     </div>
-                `;
-                postList.innerHTML += userCard;
-            });
-        }
+                </div>
+            </div>
+        `;
+        row.innerHTML += userCard; 
+    });
+
+    postList.appendChild(row); 
+}
+
 
         function showUsers() {
             fetch('/users/display')
@@ -224,11 +227,15 @@
         }
 
         function viewUser(userId) {
-            window.location.href = `/userDetails?id=${userId}`;
+            window.location.href = `/settings`;
         }
 
         function logout(){
             window.location.href = '/logout';
+        }
+
+        function Home(){
+            window.location.href = '/Home';
         }
     </script>
 
