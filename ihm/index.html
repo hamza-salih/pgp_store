@@ -149,14 +149,6 @@
     <div class="container mt-5">
         <h2>Latest Posts</h2>
 
-        <!-- Filter inputs -->
-        <div class="filter-container">
-            <input type="text" id="filterTitle" class="filter-input" placeholder="Filter by Title">
-            <input type="text" id="filterAuthor" class="filter-input" placeholder="Filter by Author">
-            <input type="text" id="filterSubject" class="filter-input" placeholder="Filter by Subject">
-            <button class="btn btn-primary" onclick="applyFilters()">Apply Filter</button>
-        </div>
-
         <div id="postList" class="d-flex flex-wrap">
             <!-- Posts will be inserted here -->
         </div>
@@ -234,17 +226,21 @@
             });
         }
 
-        function deletePost(postID) {
-            fetch(`/deletePost?id=${postID}`, { method: 'DELETE' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Post deleted successfully.');
-                        fetchPosts();
-                    } else {
-                        alert('Failed to delete post.');
-                    }
-                });
+        function deletePost(postId) {
+            fetch(`/posts/delete/${postId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    allPosts = allPosts.filter(post => post.PostID !== postId);
+                    displayPosts(allPosts);
+                } else if (response.status === 404) {
+                    console.error('Post not found');
+                } else {
+                    console.error('Error deleting post:', response);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         }
 
         function filterBySubject(subject) {
@@ -252,21 +248,6 @@
             displayPosts(filteredPosts);
         }
 
-        function applyFilters() {
-            const titleFilter = document.getElementById('filterTitle').value.toLowerCase();
-            const authorFilter = document.getElementById('filterAuthor').value.toLowerCase();
-            const subjectFilter = document.getElementById('filterSubject').value.toLowerCase();
-
-            const filteredPosts = allPosts.filter(post => {
-                return (
-                    post.Title.toLowerCase().includes(titleFilter) &&
-                    post.userID.toLowerCase().includes(authorFilter) &&
-                    post.Subject.toLowerCase().includes(subjectFilter)
-                );
-            });
-
-            displayPosts(filteredPosts);
-        }
 
         function profile() {
             window.location.href = '/settings';
