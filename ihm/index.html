@@ -85,7 +85,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                         <li class="nav-item">
-                            <a href="/Home" class="nav-link text-secondary">
+                            <a href="/#" class="nav-link text-secondary">
                                 <span class="material-symbols-outlined">home</span>
                                 Home
                             </a>
@@ -155,115 +155,139 @@
     </div>
 
     <script>
-        let allPosts = [];
-        let currentUserId;
+let allPosts = [];
+let allUsers = [];  // Store fetched users
+let currentUserId;
 
-        window.onload = function () {
-            fetchPosts();
-            fetch('/routes/fetch_public_key')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        window.location.href = '/logout';
-                    } else {
-                        document.getElementById('username').innerText = data.displayName;
-                        currentUserId = data.userID;
+window.onload = function () {
+    fetchUsers();   // Fetch users when the page loads
+    fetchPosts();
+    fetch('/routes/fetch_public_key')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                window.location.href = '/logout';
+            } else {
+                document.getElementById('username').innerText = data.displayName;
+                currentUserId = data.userID;
 
-                        if (data.utype == 2) {
-                            const dashboardButton = document.createElement('button');
-                            dashboardButton.type = 'button';
-                            dashboardButton.className = 'btn btn-warning ml-2';
-                            dashboardButton.innerText = 'Dashboard';
-                            dashboardButton.onclick = function () {
-                                window.location.href = '/dashboard';
-                            };
-                            document.querySelector('.header-right').appendChild(dashboardButton);
-                        }
-                    }
-                });
-
-            document.querySelectorAll('.nav-item a').forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const subject = this.childNodes[2].textContent.trim();
-                    filterBySubject(subject);
-                });
-            });
-        }
-
-        function fetchPosts() {
-            fetch('/posts')
-                .then(response => response.json())
-                .then(data => {
-                    allPosts = data;
-                    displayPosts(data);
-                })
-                .catch(error => {
-                    console.error('Error fetching posts:', error);
-                });
-        }
-        function displayPosts(posts) {
-            const postList = document.getElementById('postList');
-            postList.innerHTML = '';
-
-            posts.forEach(post => {
-                if (post.IsPublished) {
-                    const postCard = `
-                    <div class="col-md-4">
-                        <div class="post-card">
-                            <div class="post-username">Posted by: ${post.userID}</div>
-                            <div class="post-title">${post.Title}</div>
-                            <div class="post-body">${post.Content.substring(0, 200)}...</div>
-                            <div class="post-footer">
-                                Tags: ${post.Tags} | Subject: ${post.Subject}
-                            </div>
-                            <a href="/postDetails?id=${post.PostID}" class="btn btn-info btn-sm">Details</a>
-                            ${currentUserId == post.userID ? `<button class="btn btn-danger btn-sm" onclick="deletePost(${post.PostID})">Delete</button>` : ''}
-                        </div>
-                    </div>`;
-                    postList.insertAdjacentHTML('beforeend', postCard);
+                if (data.utype == 2) {
+                    const dashboardButton = document.createElement('button');
+                    dashboardButton.type = 'button';
+                    dashboardButton.className = 'btn btn-warning ml-2';
+                    dashboardButton.innerText = 'Dashboard';
+                    dashboardButton.onclick = function () {
+                        window.location.href = '/dashboard';
+                    };
+                    document.querySelector('.header-right').appendChild(dashboardButton);
                 }
-            });
+            }
+        });
+
+    document.querySelectorAll('.nav-item a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const subject = this.childNodes[2].textContent.trim();
+
+            if (subject === 'Home') {
+                fetchPosts();
+            } else {
+                filterBySubject(subject);
+            }
+        });
+    });
+}
+
+// Function to fetch users
+function fetchUsers() {
+    fetch('/users/display')
+        .then(response => response.json())
+        .then(data => {
+            allUsers = data;  // Store users for later use
+        })
+        .catch(error => console.error('Error fetching users:', error));
+}
+
+function fetchPosts() {
+    fetch('/posts')
+        .then(response => response.json())
+        .then(data => {
+            allPosts = data;
+            displayPosts(data);
+        })
+        .catch(error => {
+            console.error('Error fetching posts:', error);
+        });
+}
+
+// Function to find a username by userID
+function getUsernameById(userID) {
+    const user = allUsers.find(user => user.userID === userID);
+    return user ? user.displayName : 'Unknown User';
+}
+
+function displayPosts(posts) {
+    const postList = document.getElementById('postList');
+    postList.innerHTML = '';
+
+    posts.forEach(post => {
+        if (post.IsPublished) {
+            const displayName = getUsernameById(post.userID);
+            const postCard = `
+            <div class="col-md-4">
+                <div class="post-card">
+                    <div class="post-username">Posted by: ${displayName}</div> <!-- Display username here -->
+                    <div class="post-title">${post.Title}</div>
+                    <div class="post-body">${post.Content.substring(0, 200)}...</div>
+                    <div class="post-footer">
+                        Tags: ${post.Tags} | Subject: ${post.Subject}
+                    </div>
+                    <a href="/postDetails?id=${post.PostID}" class="btn btn-info btn-sm">Details</a>
+                    ${currentUserId == post.userID ? `<button class="btn btn-danger btn-sm" onclick="deletePost(${post.PostID})">Delete</button>` : ''}
+                </div>
+            </div>`;
+            postList.insertAdjacentHTML('beforeend', postCard);
         }
+    });
+}
 
-        function deletePost(postId) {
-            fetch(`/posts/delete/${postId}`, {
-                method: 'DELETE'
-            })
-            .then(response => {
-                if (response.ok) {
-                    allPosts = allPosts.filter(post => post.PostID !== postId);
-                    displayPosts(allPosts);
-                } else if (response.status === 404) {
-                    console.error('Post not found');
-                } else {
-                    console.error('Error deleting post:', response);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+function deletePost(postId) {
+    fetch(`/posts/delete/${postId}`, {
+        method: 'DELETE'
+    })
+    .then(response => {
+        if (response.ok) {
+            allPosts = allPosts.filter(post => post.PostID !== postId);
+            displayPosts(allPosts);
+        } else if (response.status === 404) {
+            console.error('Post not found');
+        } else {
+            console.error('Error deleting post:', response);
         }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
-        function filterBySubject(subject) {
-            const filteredPosts = allPosts.filter(post => post.Subject === subject);
-            displayPosts(filteredPosts);
-        }
+function filterBySubject(subject) {
+    const filteredPosts = allPosts.filter(post => post.Subject === subject);
+    displayPosts(filteredPosts);
+}
 
+function profile() {
+    window.location.href = '/settings';
+}
 
-        function profile() {
-            window.location.href = '/settings';
+function logout() {
+    fetch('/logout')
+        .then(() => {
+            window.location.href = '/logout';
+        });
+}
 
-        }
+function addPost() {
+    window.location.href = '/CreatePost';
+}
 
-        function logout() {
-            fetch('/logout')
-                .then(() => {
-                    window.location.href = '/logout';
-                });
-        }
-
-        function addPost() {
-            window.location.href = '/CreatePost';
-        }
     </script>
 </body>
 
