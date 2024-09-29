@@ -9,19 +9,17 @@ router.put('/update/:id', async (req, res) => {
   console.log(`Update request for userID: ${id} with data:`, { displayName, Username, Password, Email, Address, PGPKey, pin, utype });
 
   try {
-    // Prepare the updated data object
     const updatedData = {
       displayName,
       Username,
-      Password: Password ? await bcrypt.hash(Password, 10) : undefined, // Hash new password if provided
+      Password: Password ? await bcrypt.hash(Password, 10) : undefined,
       Email,
       Address,
       PGPKey,
-      pin: pin ? await bcrypt.hash(String(pin), 10) : undefined, // Hash new pin if provided
+      pin: pin ? await bcrypt.hash(String(pin), 10) : undefined,
       utype
     };
 
-    // Remove undefined keys
     Object.keys(updatedData).forEach(key => updatedData[key] === undefined && delete updatedData[key]);
 
     const updatedCount = await update_user(id, updatedData);

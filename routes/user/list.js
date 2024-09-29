@@ -12,7 +12,6 @@ router.get('/display', async (req, res) => {
     }
 });
 
-// Ensure you implement and export getUserById
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
