@@ -8,9 +8,9 @@ router.delete('/:id', async (req, res) => {
     try {
         const deletedPost = await delete_post(id);
         if (deletedPost) {
-            res.status(204).send();  // No content, meaning deletion was successful
+            res.status(204).send();
         } else {
-            res.status(404).json({ message: 'Post not found' });  // Post not found
+            res.status(404).json({ message: 'Post not found' });
         }
     } catch (error) {
         res.status(500).json({ message: 'Error deleting post', error });

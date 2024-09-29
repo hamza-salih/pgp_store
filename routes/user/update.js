@@ -1,39 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const { update_user } = require('../../access_db/user_queries');
+const { update_user, get_user_by_id } = require('../../access_db/user_queries');
 
 router.put('/update/:id', async (req, res) => {
   const { id } = req.params;
-  const { displayName, Username, Password, Email, Address, PGPKey, pin, utype } = req.body;
+  const { displayName, Email, Address, PGPKey } = req.body;
 
-  console.log(`Update request for userID: ${id} with data:`, { displayName, Username, Password, Email, Address, PGPKey, pin, utype });
+  console.log('User ID:', id);
+  console.log('Update Data:', { displayName, Email, Address, PGPKey });
 
   try {
     const updatedData = {
       displayName,
-      Username,
-      Password: Password ? await bcrypt.hash(Password, 10) : undefined,
       Email,
       Address,
       PGPKey,
-      pin: pin ? await bcrypt.hash(String(pin), 10) : undefined,
-      utype
     };
 
     Object.keys(updatedData).forEach(key => updatedData[key] === undefined && delete updatedData[key]);
 
+    // Check if user exists first
+    const user = await get_user_by_id(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     const updatedCount = await update_user(id, updatedData);
 
     if (updatedCount > 0) {
-      console.log('User updated successfully:', id);
       res.status(200).json({ message: 'User updated successfully' });
     } else {
-      console.log('User not found:', id);
-      res.status(404).json({ message: 'User not found' });
+      res.status(400).json({ message: 'No data was updated' });
     }
   } catch (error) {
     console.error('Error updating user:', error);
-    res.status(500).json({ message: 'Error updating user', error });
+    res.status(500).json({ message: 'Error updating user', error: error.message });
   }
 });
 

@@ -134,7 +134,7 @@
                         </li>
                     </ul>
                     <div class="header-right d-flex align-items-center">
-                        <a href="#" class="username nav-link text-secondary d-inline-flex">
+                        <a href="#" class="username nav-link text-secondary d-inline-flex" onclick="profile()">
                             <span class="material-symbols-outlined">person</span>
                             <span id="username"></span>
                         </a>
@@ -175,7 +175,7 @@
                         window.location.href = '/logout';
                     } else {
                         document.getElementById('username').innerText = data.displayName;
-                        currentUserId = data.userID; // Store the current user ID
+                        currentUserId = data.userID;
 
                         if (data.utype == 2) {
                             const dashboardButton = document.createElement('button');
@@ -268,9 +268,9 @@
             displayPosts(filteredPosts);
         }
 
-        function myPosts() {
-            const myPosts = allPosts.filter(post => post.userID === currentUserId);
-            displayPosts(myPosts);
+        function profile() {
+            window.location.href = '/settings';
+
         }
 
         function logout() {

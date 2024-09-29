@@ -2,7 +2,6 @@ const sequelize = require('./db');
 const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-
 const User = sequelize.define('User', {
   userID: {
     type: DataTypes.INTEGER,
@@ -22,12 +21,11 @@ const User = sequelize.define('User', {
   tableName: 'Users'
 });
 
-
 async function getUserByUsername(username) {
   return await User.findOne({ where: { Username: username } });
 }
 
-async function registerUser(	displayName, username, password, email, address, pgp_key, pin, utype) {
+async function registerUser(displayName, username, password, email, address, pgp_key, pin, utype) {
   try {
     const hashed_password = await bcrypt.hash(password, 10);
     const pinString = String(pin);
@@ -49,24 +47,47 @@ async function registerUser(	displayName, username, password, email, address, pg
     throw error;
   }
 }
+
 async function getAllUsers() {
   return await User.findAll();
 }
 
+async function get_user_by_id(userID) {
+  try {
+    return await User.findOne({ where: { userID } });
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    throw error;
+  }
+}
 
 async function update_user(userID, updatedData) {
   try {
     const [updatedCount] = await User.update(updatedData, { where: { userID } });
     return updatedCount;
   } catch (error) {
-    console.error('Error updating the user:', error);
+    console.error('Error updating user:', error);
     throw error;
   }
 }
 
-module.exports = { getUserByUsername, registerUser, getAllUsers, update_user };
 
+async function delete_user(userID) {
+  try {
+    const deletedUser = await User.destroy({ where: { userID } });
+    return deletedUser;
+  } catch (error) {
+    console.error('Error deleting the user:', error);
+    throw error;
+  }
+}
 
-
-
-module.exports = { getUserByUsername, registerUser, getAllUsers };
+module.exports = {
+  User,
+  getUserByUsername,
+  registerUser,
+  getAllUsers,
+  get_user_by_id,
+  update_user,
+  delete_user
+};

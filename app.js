@@ -19,6 +19,10 @@ const deletePostRoute = require('./routes/post/delete');
 const detailsRouter = require('./routes/post/details');
 const displayUser = require('./routes/user/list');
 const userUpdateRouter = require('./routes/user/update');
+const UserDetailsRouter = require('./routes/user/details');
+const deleteUserRoute = require('./routes/user/delete');
+
+
 
 const app = express();
 
@@ -49,6 +53,10 @@ app.use('/posts/delete', deletePostRoute);
 // user routes 
 app.use('/users', displayUser);
 app.use('/users', userUpdateRouter);
+app.use('/userDetails', UserDetailsRouter);
+app.use('/users/delete', deleteUserRoute);
+
+
 
 
 
@@ -95,6 +103,10 @@ app.get('/editPost', (req, res) => {
 
 app.get('/postDetails', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'post', 'details.html'));
+});
+
+app.get('/userDetails', (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'user', 'details.html'));
 });
 
 app.get('/test', (req, res) => {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +8,30 @@
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
   <header>
     <div class="px-3 py-2 text-bg-dark border-bottom">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
-                </ul>
-                <div class="header-right d-flex align-items-center">
-                    <button type="button" class="logout-btn btn btn-primary" onclick="Home()">Home</button>
-                </div>
-            </div>
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+          </ul>
+          <div class="header-right d-flex align-items-center">
+            <button type="button" class="logout-btn btn btn-primary" onclick="Home()">Home</button>
+          </div>
         </div>
+      </div>
     </div>
-</header>
+  </header>
   <div class="container mt-5">
     <h1 class="text-center">Update Your Profile</h1>
-    
+
     <form id="updateForm" class="mt-4">
+      <div class="form-group">
+        <label for="userID">User Identification:</label>
+        <input type="text" class="form-control" id="userID" name="userID" readonly>
+      </div>
+
       <div class="form-group">
         <label for="displayName">Display Name:</label>
         <input type="text" class="form-control" id="displayName" name="displayName" required>
@@ -52,10 +59,8 @@
 
       <div class="form-group">
         <label for="pin">PIN:</label>
-        <input type="number" class="form-control" id="pin" name="pin" required>
+        <input type="number" class="form-control" id="pin" name="pin" readonly>
       </div>
-
-      <input type="text" id="utype" name="utype" hidden value="1">
 
       <button type="submit" class="btn btn-primary btn-block">Update</button>
     </form>
@@ -76,6 +81,7 @@
           window.location.href = '/logout';
         } else {
           console.log(data);
+          document.getElementById('userID').value = data.userID;
           document.getElementById('displayName').value = data.displayName;
           document.getElementById('Username').value = data.username;
           document.getElementById('Email').value = data.Email;
@@ -87,52 +93,48 @@
 
     document.getElementById('updateForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-
+      const userID = document.getElementById('userID').value;
       const displayName = document.getElementById('displayName').value;
       const Username = document.getElementById('Username').value;
-      const Password = document.getElementById('Password') ? document.getElementById('Password').value : '';
       const Email = document.getElementById('Email').value;
       const Address = document.getElementById('Address').value;
       const PGPKey = document.getElementById('PGPKey').value;
-      const pin = document.getElementById('pin').value;
-      const utype = document.getElementById('utype').value;
 
       const userData = {
         displayName,
-        Password,
         Email,
         Address,
         PGPKey,
-        pin,
-        utype
       };
 
       Object.keys(userData).forEach(key => userData[key] === "" && delete userData[key]);
 
       try {
-        const response = await fetch(`/users/update/${Username}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(userData)
-        });
+  const response = await fetch(`/users/update/${userID}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData)
+  });
 
-        const result = await response.json();
-        
-        if (response.ok) {
-          document.getElementById('responseMessage').innerHTML = '<div class="alert alert-success">User updated successfully!</div>';
-        } else {
-          document.getElementById('responseMessage').innerHTML = `<div class="alert alert-success">Account is updated</div>`;
-        }
-      } catch (error) {
-        document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">Failed to update user: ${error.message}</div>`;
-      }
+  const result = await response.json();
+
+  if (response.ok) {
+    document.getElementById('responseMessage').innerHTML = '<div class="alert alert-success">User updated successfully!</div>';
+  } else {
+    document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">${result.message || 'Error updating the Account'}</div>`;
+  }
+} catch (error) {
+  document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">Failed to update user: ${error.message}</div>`;
+}
+
     });
 
-    function Home(){
-            window.location.href = '/Home';
-        }
+    function Home() {
+      window.location.href = '/Home';
+    }
   </script>
 </body>
+
 </html>

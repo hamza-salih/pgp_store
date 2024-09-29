@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .post-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .post-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .post-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        .tags {
+            margin-bottom: 20px;
+        }
+        .badge-tag {
+            background-color: #007bff;
+            color: white;
+            margin-right: 5px;
+        }
+        .btn-back {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="post-card">
+            <h2 id="postTitle" class="post-title"></h2>
+
+            <div class="post-meta">
+                <p><strong>User Identification:</strong> <span id="userID"></span></p>
+                <p><strong>Name :</strong> <span id="Name"></span></p>
+                <p><strong>encrypted password:</strong> <span id="password"></span></p>
+                <p><strong>Email:</strong> <span id="Email"></span></p>
+                <p><strong>Address:</strong> <span id="Address"></span></p>
+                <p><strong>PGP key:</strong> <span id="PGP"></span></p>
+                <p><strong>User Type:</strong> <span id="UserType"></span></p>
+
+            </div>
+
+
+            <a href="/home" class="btn btn-back mt-3">Back to Posts</a>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const userId  = params.get('id');
+
+        window.onload = function () {
+            fetch(`/userDetails/${userId}`)
+                .then(response => response.json())
+                .then(user => {
+                    document.getElementById('userID').innerText = user.userID;
+                    document.getElementById('Name').innerText = user.Username;
+                    document.getElementById('password').innerText = user.password;
+                    document.getElementById('Email').innerText = user.Email;
+                    document.getElementById('PGP').innerText = user.PGPKey;
+                    document.getElementById('UserType').innerText = user.utype;
+                })
+                .catch(error => {
+                    console.error('Error fetching user details:', error);
+                });
+        };
+    </script>
+</body>
+
+</html>
