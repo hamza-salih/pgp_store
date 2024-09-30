@@ -100,7 +100,6 @@ app.get('/header', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'public', 'partials', 'header.html'));
 });
 
-
 app.get('/auth/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'auth', 'register.html'));
 });
@@ -148,7 +147,6 @@ app.get('/userDetails', isAuthenticated, (req, res) => {
 app.get('/settings', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'user', 'edit.html'));
 });
-
 
 // -------------------------------------------------------------------------------------
 
