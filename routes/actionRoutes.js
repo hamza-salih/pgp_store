@@ -1,17 +1,28 @@
+// actionRoutes.js
+
 const express = require("express");
 const router = express.Router();
 const session = require("express-session");
-const {
-  getUserByUsername,
-  registerUser,
-} = require("../access_db/user_queries");
+const { getUserByUsername } = require("../access_db/user_queries");
 
+// Middleware to check if the user is authenticated
+function isAuthenticated(req, res, next) {
+  if (req.session && req.session.correctUser) {
+    // User is authenticated, allow access
+    return next();
+  } else {
+    // User is not authenticated, redirect to login
+    return res.redirect("/auth/login");
+  }
+}
+
+// Session setup
 // router.use(
 //   session({
-//     secret: "",
+//     secret: "your_secret_key",
 //     resave: false,
 //     saveUninitialized: true,
-//     cookie: { secure: true },
+//     cookie: { secure: false }, // true if using HTTPS
 //   })
 // );
 
@@ -46,10 +57,10 @@ router.post("/login", async (req, res) => {
       req.session.encrypted = true;
       req.session.displayName = user.displayName;
       req.session.pin = user.pin;
-      req.session.utype= user.utype;
-      req.session.Email= user.Email;
-      req.session.Address= user.Address;
-      res.redirect("../decrypt");
+      req.session.utype = user.utype;
+      req.session.Email = user.Email;
+      req.session.Address = user.Address;
+      res.redirect("/decrypt");
     } else {
       res.status(404).send("User not found.");
     }
@@ -57,11 +68,10 @@ router.post("/login", async (req, res) => {
     const original_message = req.session.randomMessage;
     if (decrypted_message.trim() === original_message.trim()) {
       const user = await getUserByUsername(req.session.username);
-      req.session.UserID = user.UserID;
       req.session.correctUser = true;
-      res.redirect("../home");
+      res.redirect("/home");
     } else {
-      return res.redirect('/decrypt');
+      return res.redirect("/decrypt");
     }
   } else {
     res.status(400).send("Invalid request.");

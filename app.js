@@ -22,6 +22,40 @@ const userUpdateRouter = require('./routes/user/update');
 const UserDetailsRouter = require('./routes/user/details');
 const deleteUserRoute = require('./routes/user/delete');
 
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.correctUser) {
+        return next();
+    } else {
+        res.redirect('/auth/login');
+    }
+}
+
+function isAdmin(req, res, next) {
+    if (req.session.userID != 2) {
+        return next();
+    } else {
+        res.redirect('/home');
+    }
+}
+
+
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.correctUser) {
+        return next();
+    } else {
+        res.redirect('/auth/login');
+    }
+}
+
+function isAdmin(req, res, next) {
+    if (req.session && req.session.userID == 2) {
+        return next();
+    } else {
+        res.redirect('/home');
+    }
+}
+
+
 
 
 const app = express();
@@ -58,7 +92,9 @@ app.use('/users/delete', deleteUserRoute);
 
 
 
-
+app.get('/Dashboard', isAuthenticated, isAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'ihm', 'admin', 'dashboard.html'));
+});
 
 app.get('/header', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'public', 'partials', 'header.html'));
@@ -85,39 +121,31 @@ app.get('/decryptMessage', (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'encryption', 'decryption.html'));
 });
 
-app.get('/listPost', (req, res) => {
+app.get('/listPost', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'post', 'list.html'));
 });
 
-app.get('/home', (req, res) => {
+app.get('/home', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'index.html'));
 });
 
-app.get('/CreatePost', (req, res) => {
+app.get('/CreatePost', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'post', 'create.html'));
 });
 
-app.get('/editPost', (req, res) => {
+app.get('/editPost', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'post', 'edit.html'));
 });
 
-app.get('/postDetails', (req, res) => {
+app.get('/postDetails', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'post', 'details.html'));
 });
 
-app.get('/userDetails', (req, res) => {
+app.get('/userDetails', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'user', 'details.html'));
 });
 
-app.get('/test', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ihm', 'test.html'));
-});
-
-app.get('/Dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ihm', 'admin', 'dashboard.html'));
-});
-
-app.get('/settings', (req, res) => {
+app.get('/settings', isAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'ihm', 'user', 'edit.html'));
 });
 
