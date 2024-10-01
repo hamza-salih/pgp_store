@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { Post } = require('../../access_db/product_queries');
 
-// Route to get all posts
 router.get('/posts', async (req, res) => {
   try {
 

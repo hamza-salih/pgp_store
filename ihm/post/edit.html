@@ -59,7 +59,7 @@
                 Title: document.getElementById('title').value,
                 Content: document.getElementById('content').value,
                 Tags: document.getElementById('tags').value,
-                IsPublished: document.getElementById('isPublished').checked // Get checkbox value
+                IsPublished: document.getElementById('isPublished').checked
             };
 
             fetch(`/posts/update/${postId}`, {

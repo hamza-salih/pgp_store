@@ -5,26 +5,15 @@ const router = express.Router();
 const session = require("express-session");
 const { getUserByUsername } = require("../access_db/user_queries");
 
-// Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.correctUser) {
-    // User is authenticated, allow access
     return next();
   } else {
-    // User is not authenticated, redirect to login
     return res.redirect("/auth/login");
   }
 }
 
-// Session setup
-// router.use(
-//   session({
-//     secret: "your_secret_key",
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false }, // true if using HTTPS
-//   })
-// );
+
 
 router.get("/fetch_public_key", (req, res) => {
   if (!req.session.username) {

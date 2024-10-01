@@ -48,7 +48,7 @@ function isAuthenticated(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-    if (req.session && req.session.userID == 2) {
+    if (req.session && req.session.utype == 2) {
         return next();
     } else {
         res.redirect('/home');

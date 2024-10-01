@@ -88,7 +88,6 @@
                     document.getElementById('postSubject').innerText = post.Subject;
                     document.getElementById('postContent').innerText = post.Content;
                     
-                    // Show tags as badges
                     if (post.Tags) {
                         const tagsArray = post.Tags.split(',');
                         document.getElementById('postTags').innerHTML = tagsArray.map(tag => `<span class="badge badge-tag">${tag.trim()}</span>`).join('');
