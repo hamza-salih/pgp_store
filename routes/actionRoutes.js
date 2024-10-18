@@ -13,8 +13,6 @@ function isAuthenticated(req, res, next) {
   }
 }
 
-
-
 router.get("/fetch_public_key", (req, res) => {
   if (!req.session.username) {
     return res.json({ error: "User not logged in." });
